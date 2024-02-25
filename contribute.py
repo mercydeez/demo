@@ -29,7 +29,7 @@ def main(def_args=sys.argv[1:]):
     if days_after < 0:
         sys.exit('days_after must not be negative')
     # os.mkdir(directory)
-    os.chdir(directory)
+    # os.chdir(directory)
     run(['git', 'init', '-b', 'main'])
 
     run(['git', 'config', 'user.name', user_name])
