@@ -5,8 +5,6 @@ from datetime import datetime, timedelta
 from random import randint
 from subprocess import Popen, check_output
 import sys
-import unittest
-
 
 def main(def_args=sys.argv[1:]):
     args = arguments(def_args)
@@ -16,18 +14,19 @@ def main(def_args=sys.argv[1:]):
     user_name = "mercydeez"
     user_email = "atharva3895@gmail.com"
     
-    if repository is not None:
+    if repository:
         start = repository.rfind('/') + 1
         end = repository.rfind('.')
         directory = repository[start:end]
+    
     no_weekends = args.no_weekends
     frequency = args.frequency
     days_before = args.days_before
-    if days_before < 0:
-        sys.exit('days_before must not be negative')
     days_after = args.days_after
-    if days_after < 0:
-        sys.exit('days_after must not be negative')
+
+    if days_before < 0 or days_after < 0:
+        sys.exit('days_before and days_after must not be negative')
+
     os.mkdir(directory)
     os.chdir(directory)
     run(['git', 'init', '-b', 'main'])
@@ -35,19 +34,18 @@ def main(def_args=sys.argv[1:]):
     run(['git', 'config', 'user.name', user_name])
     run(['git', 'config', 'user.email', user_email])
 
+    run(['git', 'remote', 'add', 'origin', repository])
+
     start_date = curr_date.replace(hour=20, minute=0) - timedelta(days_before)
     for day in (start_date + timedelta(n) for n in range(days_before + days_after)):
         if (not no_weekends or day.weekday() < 5) and randint(0, 100) < frequency:
             for commit_time in (day + timedelta(minutes=m) for m in range(contributions_per_day(args))):
                 contribute(commit_time)
 
-    if repository is not None:
-        # run(['git', 'remote', 'add', 'origin', repository])
-        # run(['git', 'branch', '-M', 'main'])
-        run(['git', 'pull'])
-        run(['git', 'push', '-u', 'origin', 'main'])
+    run(['git', 'branch', '--set-upstream-to=origin/main', 'main'])
+    run(['git', 'push', '-u', 'origin', 'main'])
 
-    print('\nRepository generation ' + '\x1b[6;30;42mcompleted successfully\x1b[0m!')
+    print('\nRepository generation \x1b[6;30;42mcompleted successfully\x1b[0m!')
 
 def contribute(date):
     with open(os.path.join(os.getcwd(), 'README.md'), 'a') as file:
@@ -62,8 +60,7 @@ def message(date):
     return date.strftime('Contribution: %Y-%m-%d %H:%M')
 
 def contributions_per_day(args):
-    max_c = args.max_commits
-    return randint(1, min(max_c, 20))
+    return randint(1, min(args.max_commits, 20))
 
 def arguments(argsval):
     parser = argparse.ArgumentParser()
