@@ -71,7 +71,7 @@ def arguments(argsval):
     parser.add_argument('-mc', '--max_commits', type=int, default=10)
     parser.add_argument('-fr', '--frequency', type=int, default=80)
     parser.add_argument('-r', '--repository', type=str)
-    parser.add_argument('-db', '--days_before', type=int, default=3365)
+    parser.add_argument('-db', '--days_before', type=int, default=565)
     parser.add_argument('-da', '--days_after', type=int, default=0)
     return parser.parse_args(argsval)
 
