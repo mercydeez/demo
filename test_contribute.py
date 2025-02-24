@@ -18,8 +18,8 @@ class TestContribute(unittest.TestCase):
     def test_commits(self):
         contribute.NUM = 11   # limiting the number only for unittesting
         contribute.main(['-nw',
-                         '--user_name=sidz111',
-                         '--user_email=sssurwade2212@gmail.com',
+                         '--user_name=mercydeez',
+                         '--user_email=atharva3895@gmail.com',
                          '-mc=12',
                          '-fr=82',
                          '-db=10',
