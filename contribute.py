@@ -28,7 +28,7 @@ def main(def_args=sys.argv[1:]):
     days_after = args.days_after
     if days_after < 0:
         sys.exit('days_after must not be negative')
-    os.mkdir(directory)
+    # os.mkdir(directory)
     os.chdir(directory)
     run(['git', 'init', '-b', 'main'])
 
@@ -44,8 +44,8 @@ def main(def_args=sys.argv[1:]):
     if repository is not None:
         # run(['git', 'remote', 'add', 'origin', repository])
         # run(['git', 'branch', '-M', 'main'])
-        run(['git', 'pull'])
-        run(['git', 'push', '-u', 'origin', 'main'])
+        run(['git', 'pull', "origin", "main"])
+        run(['git', 'push', '--force', 'origin', 'main'])
 
     print('\nRepository generation ' + '\x1b[6;30;42mcompleted successfully\x1b[0m!')
 
